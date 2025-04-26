@@ -1,1 +1,96 @@
-<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>adultcards</title><script defer="defer" src="/js/chunk-vendors.49adeb92.js"></script><script defer="defer" src="/js/app.1d951aa1.js"></script><link href="/css/app.36a0d3bb.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but adultcards doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div></body></html>
+<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="icon" href="/favicon.ico"><title>adultcards</title><style>html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        position: relative;
+        touch-action: pan-y;
+      }
+      
+      /* 爱心样式 */
+      .heart {
+        position: fixed;
+        font-size: 24px;
+        color: #ff4d6d;
+        user-select: none;
+        pointer-events: none;
+        z-index: 10000;
+        animation: float-heart 1.5s forwards;
+        text-shadow: 0 0 5px rgba(255, 77, 109, 0.3);
+      }
+      
+      @keyframes float-heart {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(-40px) scale(1.2) rotate(10deg);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-80px) scale(0.8) rotate(20deg);
+          opacity: 0;
+        }
+      }</style><script defer="defer" src="/js/chunk-vendors.cf277980.js"></script><script defer="defer" src="/js/app.b0fd9996.js"></script><link href="/css/app.b0710046.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but adultcards doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script>document.addEventListener('DOMContentLoaded', function() {
+        // 爱心符号数组
+        const hearts = ['❤️', '💖', '💘', '💕', '💓', '💗', '💝'];
+        // 节流变量，防止快速点击生成太多爱心
+        let lastHeartTime = 0;
+        
+        // 处理点击和触摸事件
+        function addHeartEvent(event) {
+          // 使用节流控制爱心生成频率
+          const now = Date.now();
+          if (now - lastHeartTime < 100) {
+            return; // 100ms内只生成一个爱心
+          }
+          lastHeartTime = now;
+          
+          // 获取点击/触摸坐标
+          let x, y;
+          if (event.type === 'touchstart') {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+          } else {
+            x = event.clientX;
+            y = event.clientY;
+          }
+          
+          // 创建爱心元素
+          createHeart(x, y);
+        }
+        
+        // 创建爱心元素
+        function createHeart(x, y) {
+          // 随机选择一个爱心符号
+          const heart = hearts[Math.floor(Math.random() * hearts.length)];
+          
+          // 创建爱心DOM元素
+          const heartEl = document.createElement('div');
+          heartEl.className = 'heart';
+          heartEl.textContent = heart;
+          
+          // 设置位置
+          heartEl.style.left = `${x - 10}px`;
+          heartEl.style.top = `${y - 10}px`;
+          
+          // 随机旋转和缩放
+          const rotate = Math.random() * 30 - 15;
+          const scale = 0.8 + Math.random() * 0.4;
+          heartEl.style.transform = `rotate(${rotate}deg) scale(${scale})`;
+          
+          // 添加到页面
+          document.body.appendChild(heartEl);
+          
+          // 动画结束后移除元素
+          setTimeout(() => {
+            heartEl.remove();
+          }, 1500);
+        }
+        
+        // 添加事件监听器
+        document.addEventListener('click', addHeartEvent);
+        document.addEventListener('touchstart', addHeartEvent, {passive: true});
+      });</script></body></html>
